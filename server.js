@@ -4,15 +4,12 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-const URI =
-  "mongodb+srv://gionnibigudd:oYG15srUK4mtHdm6@receipt-saver.unuv8gx.mongodb.net/?retryWrites=true&w=majority&appName=receipt-saver";
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Connessione a MongoDB
-
 async function connect() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
@@ -21,11 +18,6 @@ async function connect() {
     console.error("❌ Errore di connessione:", err);
   }
 }
-
-// mongoose
-//   .connect(URI)
-//   .then(() => console.log("✅ Connesso a MongoDB"))
-//   .catch((err) => console.error("❌ Errore di connessione:", err));
 
 // Rotte
 const itemsRoute = require("./routes/items");
