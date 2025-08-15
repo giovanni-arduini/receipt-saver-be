@@ -20,8 +20,11 @@ async function connect() {
 }
 
 // Rotte
-const itemsRoute = require("./routes/items");
-app.use("/api/items", itemsRoute);
+const filesRoute = require("./routes/files");
+const foldersRoutes = require("./routes/folders");
+
+app.use("/api/files", filesRoute);
+app.use("/api/folders", foldersRoutes);
 
 // Avvio server
 connect();
