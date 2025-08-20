@@ -16,12 +16,12 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     id = parseInt(req.params.id);
-    const folderToDelete = await Folder.findOneAndDelete(id);
+    const folderToShow = await Folder.findOne(id);
 
-    if (!folderToDelete)
+    if (!folderToShow)
       return res.status(404).json({ error: "Cartella non trovata" });
 
-    res.json({ message: "Cartella eliminata", file: folderToDelete });
+    res.json(folderToShow);
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: err.message });
@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //Create new folder
-router.post("/", async () => {
+router.post("/", async (req, res) => {
   try {
     const lastFolder = await Folder.findOne().sort({ id: -1 });
     const nextId = lastFolder ? lastFolder.id + 1 : 1;
@@ -63,6 +63,23 @@ router.put("/:id", async (req, res) => {
     res.json(updatedFolder);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+// Delete fodler
+router.delete("/:id", async (req, res) => {
+  try {
+    const folderToDelete = await Folder.findOneAndDelete({
+      id: parseInt(req.params.id),
+    });
+
+    if (!folderToDelete)
+      return res.status(404).json({ error: "Cartella non trovata" });
+
+    res.json({ message: "Elemento eliminato", folder: folderToDelete });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
 
